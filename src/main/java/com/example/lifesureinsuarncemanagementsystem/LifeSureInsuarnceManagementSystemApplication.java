@@ -9,5 +9,4 @@ public class LifeSureInsuarnceManagementSystemApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(LifeSureInsuarnceManagementSystemApplication.class, args);
 	}
-
 }
