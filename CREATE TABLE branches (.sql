@@ -1,0 +1,13 @@
+CREATE TABLE branches (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    b_code VARCHAR(50) NOT NULL UNIQUE,
+    b_name VARCHAR(100) NOT NULL,
+    b_address VARCHAR(200) NOT NULL,
+    b_phone VARCHAR(20) NOT NULL,
+    manager_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100) NOT NULL UNIQUE,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    target_amount DECIMAL(14,2) DEFAULT 0.00,
+    achieved_amount DECIMAL(14,2) DEFAULT 0.00,
+    status VARCHAR(20) NOT NULL DEFAULT 'ACTIVE'
+);

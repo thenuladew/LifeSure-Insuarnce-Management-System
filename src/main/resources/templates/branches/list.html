@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{layout :: layout(~{::content})}">
+    <div th:fragment="content">
+        <h2 class="page-title">Branch Management Dashboard</h2>
+        
+        <div class="row mb-4">
+            <div class="col-md-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">Total Branches</h5>
+                    </div>
+                    <div class="card-body">
+                        <h3 class="text-center" th:text="${#lists.size(branches)}">0</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <div class="card-header d-flex justify-content-between align-items-center">
+                <h5 class="card-title mb-0">Branch List</h5>
+                <div class="d-flex gap-2">
+                    <a href="/branches/dashboard" class="btn btn-outline-primary">Performance Dashboard</a>
+                    <a href="/branches/new" class="btn btn-primary">Add New Branch</a>
+                </div>
+            </div>
+            <div class="card-body">
+                <form class="row g-3 align-items-end mb-4" method="get" action="/branches">
+                    <div class="col-md-6">
+                        <label for="keyword" class="form-label">Search</label>
+                        <input type="text" class="form-control" id="keyword" name="keyword"
+                               placeholder="Search by name, address, or manager"
+                               th:value="${keyword}">
+                    </div>
+                    <div class="col-md-3">
+                        <label for="status" class="form-label">Status</label>
+                        <select class="form-select" id="status" name="status">
+                            <option value="" th:selected="${selectedStatus == null}">All</option>
+                            <option th:each="status : ${statuses}"
+                                    th:value="${status}"
+                                    th:selected="${selectedStatus == status}"
+                                    th:text="${status.displayName}">Active</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 d-flex gap-2">
+                        <button type="submit" class="btn btn-primary flex-grow-1">Apply</button>
+                        <a href="/branches" class="btn btn-secondary">Reset</a>
+                    </div>
+                </form>
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Code</th>
+                                <th>Name</th>
+                                <th>Address</th>
+                                <th>Phone</th>
+                                <th>Manager</th>
+                                <th>Email</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="branch : ${branches}">
+                                <td th:text="${branch.bCode}"></td>
+                                <td th:text="${branch.bName}"></td>
+                                <td th:text="${branch.bAddress}"></td>
+                                <td th:text="${branch.bPhone}"></td>
+                                <td th:text="${branch.managerName}"></td>
+                                <td th:text="${branch.email}"></td>
+                                <td>
+                                    <span class="badge"
+                                          th:text="${branch.status != null ? branch.status.displayName : 'Unknown'}"
+                                          th:classappend="${branch.status != null && branch.status.name() == 'ACTIVE'} ? ' bg-success' : ' bg-secondary'"></span>
+                                </td>
+                                <td>
+                                    <a th:href="@{/branches/edit/{id}(id=${branch.id})}" class="btn btn-sm btn-primary">Edit</a>
+                                    <a th:href="@{/branches/delete/{id}(id=${branch.id})}" 
+                                       class="btn btn-sm btn-danger"
+                                       onclick="return confirm('Are you sure you want to delete this branch?')">Delete</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</html>
