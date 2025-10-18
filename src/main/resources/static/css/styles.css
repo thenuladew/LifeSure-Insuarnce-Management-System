@@ -1,0 +1,98 @@
+:root {
+    --navy-blue: #000080;
+    --light-navy: #1a1a8c;
+    --white: #ffffff;
+    --light-gray: #f8f9fa;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--light-gray);
+}
+
+.navbar {
+    background-color: var(--navy-blue) !important;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.navbar-brand {
+    color: var(--white) !important;
+    font-weight: 600;
+    font-size: 1.5rem;
+}
+
+.nav-link {
+    color: var(--white) !important;
+    font-weight: 500;
+}
+
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+}
+
+.card-header {
+    background-color: var(--navy-blue);
+    color: var(--white);
+    border-radius: 10px 10px 0 0 !important;
+    padding: 1rem;
+}
+
+.btn-primary {
+    background-color: var(--navy-blue);
+    border-color: var(--navy-blue);
+}
+
+.btn-primary:hover {
+    background-color: var(--light-navy);
+    border-color: var(--light-navy);
+}
+
+.table th {
+    background-color: var(--navy-blue);
+    color: var(--white);
+}
+
+.page-title {
+    color: var(--navy-blue);
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.form-control:focus {
+    border-color: var(--navy-blue);
+    box-shadow: 0 0 0 0.2rem rgba(0,0,128,0.25);
+}
+
+.footer {
+    background-color: var(--navy-blue);
+    color: var(--white);
+    padding: 1rem 0;
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+}
+
+.summary-card {
+    background: linear-gradient(135deg, rgba(0,0,128,0.08), rgba(0,0,128,0.02));
+}
+
+.summary-card h4 {
+    font-weight: 600;
+    color: var(--navy-blue);
+}
+
+.progress {
+    background-color: rgba(0,0,128,0.1);
+    border-radius: 999px;
+}
+
+.progress-bar {
+    font-weight: 500;
+}

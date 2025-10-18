@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <link rel="icon" type="image/png" th:href="@{/images/homeWeb/title.png}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureLife - Services</title>
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/Services123.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        body { background-color: #fdfefe; }
+        .course-card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.3s ease-in-out;
+        }
+        .course-card:hover {
+            transform: scale(1.05);
+        }
+        .course-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        .course-badge {
+            font-size: 14px;
+        }
+        .x {
+            color: #054408;
+            text-align: center;
+            font-size: 18px;
+        }
+    </style>
+</head>
+<body>
+
+
+
+<!-- NAVBAR -->
+<div class="navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark container">
+        <a class="navbar-brand py-2">
+            <img th:src="@{/images/homeWeb/brandlogo1.png}" width="35" height="35" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/aboutus}"   loading="lazy" >About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/servicesproduct}"   loading="lazy" >Services</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link btn btn-primary ms-3 px-4" th:href="@{/login}"   loading="lazy">Login</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<!-- END NAVBAR -->
+
+
+
+
+
+
+
+
+<!-- SERVICES SECTION -->
+<section class="container py-5">
+    <h2 class="text-center fw-bold">OUR <span style="color: #1ad023;">LIFE INSURANCE PRODUCTS</span></h2>
+    <br>
+    <p class="x">Choose the right protection for you and your loved ones.</p>
+    <br><br>
+
+    <div class="row gy-4">
+        <!-- Term Life Insurance -->
+        <div class="col-md-4">
+            <div class="card course-card shadow-sm">
+                <img th:src="@{/images/homeWeb/Term Life Insurance.png}" class="course-image" alt="Term Life Insurance">
+                <div class="card-body">
+                    <a href="#" class="removeunderline">
+                        <h5 class="card-title">Term Life Insurance</h5>
+                    </a>
+                    <p class="text-secondary">Secure your family’s future at an affordable cost. Coverage for a fixed period with a lump-sum payout if something happens during that time. </p>
+                    <ul class="text-secondary">
+                        <li>High coverage at low premiums</li>
+                        <li>Flexible policy terms</li>
+                        <li>Ideal for income replacement</li>
+                        <li>Peace of mind for your family</li>
+                    </ul>
+
+                    <span class="badge bg-success course-badge">LKR 5M Coverage</span>
+                    <span class="badge bg-warning text-dark course-badge">LKR 40,000/year</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Whole Life Insurance -->
+        <div class="col-md-4">
+            <div class="card course-card shadow-sm">
+                <img th:src="@{/images/homeWeb/Whole Life Insurance.png}" class="course-image" alt="Whole Life Insurance">
+                <div class="card-body">
+                    <a href="#" class="removeunderline">
+                        <h5 class="card-title">Whole Life Insurance</h5>
+                    </a>
+                    <p class="text-secondary">Lifelong protection with guaranteed payout and cash value growth for long-term security.</p>
+                    <ul class="text-secondary">
+                        <li>Lifetime coverage without renewal</li>
+                        <li>Guaranteed death benefit</li>
+                        <li>Cash value accumulation</li>
+                        <li>Stable long-term investment</li>
+                    </ul>
+
+                    <span class="badge bg-success course-badge">Lifetime Coverage</span>
+                    <span class="badge bg-warning text-dark course-badge">LKR 75,000/year</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Child Protection Plan -->
+        <div class="col-md-4">
+            <div class="card course-card shadow-sm">
+                <img th:src="@{/images/homeWeb/Child Protection Plan.png}" class="course-image" alt="Child Protection Plan">
+                <div class="card-body">
+                    <a href="#" class="removeunderline">
+                        <h5 class="card-title">Child Protection Plan</h5>
+                    </a>
+                    <p class="text-secondary">Secure your child’s education and dreams with a plan that protects their future.</p>
+                    <ul class="text-secondary">
+                        <li>Financial security for education</li>
+                        <li>Waiver of premiums on parent's death</li>
+                        <li>Maturity benefit for adulthood</li>
+                        <li>Peace of mind for parents</li>
+                    </ul>
+
+                    <span class="badge bg-success course-badge">LKR 2M Coverage</span>
+                    <span class="badge bg-warning text-dark course-badge">LKR 25,000/year</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- END SERVICES SECTION -->
+
+
+
+
+<!-- FOOTER -->
+<footer class="text-center text-lg-start text-white" style="background-color: #000000; width: 100%;">
+    <div class="container-fluid p-4 pb-0">
+        <section class="">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">SecureLife</h6>
+                    <p>This platform connects policyholders, insurance agents, and administrators with efficient life insurance services and resources.</p>
+                </div>
+
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">SITE MAP</h6>
+                    <p><a class="text-white" th:href="@{/}"  loading="lazy"  >Home</a></p>
+                    <p><a class="text-white" th:href="@{/aboutus}" loading="lazy"  >About</a></p>
+                    <p><a class="text-white" th:href="@{/servicesproduct}"  loading="lazy"  >Services</a></p>
+                </div>
+
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Useful Sites</h6>
+                    <p><a class="text-white" href="https://ircsl.gov.lk/" target="_blank">IRCSL</a></p>
+                    <p><a class="text-white" href="https://www.who.int/" target="_blank">WHO</a></p>
+                    <p><a class="text-white" href="https://www.cdc.gov/" target="_blank">CDC</a></p>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+                    <p><i class="fas fa-home mr-3"></i> 324, Havelock Road, Colombo 06.</p>
+                    <p><i class="fas fa-envelope mr-3"></i> securelife@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i>+94 112145300</p>
+                    <p><i class="fas fa-print mr-3"></i> +94 112145500</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-3">
+
+        <section class="p-3 pt-0">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-7 col-lg-8 text-center text-md-start">
+                    <div class="p-3">
+                        ©Copyright 2025 securelife.lk | All Rights Reserved | Privacy & Terms | Designed & Developed by EvelutionX Studio
+                    </div>
+                </div>
+                <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://web.facebook.com/profile.php?id=61581494878067"   target="_blank"   role="button" >
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/@SecureLife-i4b"  target="_blank" role="button">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://api.whatsapp.com/send/?phone=%2B94776749017&text&type=phone_number&app_absent=0" target="_blank" role="button">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</footer>
+<!-- END FOOTER -->
+
+
+
+
+<!-- JAVASCRIPT -->
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

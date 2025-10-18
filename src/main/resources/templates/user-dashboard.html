@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <meta charset="UTF-8">
+    <title>User Dashboard - LifeSure</title>
+
+    <!-- Title image -->
+    <link rel="icon" type="image/png" th:href="@{/images/homeWeb/title.png}" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SecureLife</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}" href="/css/poppins.css">
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- ✅ Font Awesome for footer icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+    <style>
+        /* ... your existing CSS ... (unchanged) */
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color:#FCFAFA;
+            color:  #495057;
+        }
+
+        .sidebar {
+            background: linear-gradient(180deg, #7E807E 0%, #7E807E 100%);
+            color: white;
+            min-height: 100vh;
+            border-right: none;
+            padding-top: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar .brand-logo {
+            text-align: center;
+            padding: 20px 0;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .sidebar .brand-logo h5 {
+            font-weight: 700;
+            font-size: 1.3rem;
+            margin-bottom: 5px;
+        }
+
+        .sidebar .brand-logo small {
+            font-size: 0.9rem;
+            opacity: 0.9;
+        }
+
+        .sidebar a {
+            color: rgba(255,255,255,0.85);
+            text-decoration: none;
+            padding: 15px 25px;
+            display: block;
+            border-radius: 8px;
+            margin: 5px 15px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+
+        .sidebar a:hover, .sidebar a.active {
+            background-color: rgba(255,255,255,0.2);
+            color: #e0145c;
+            transform: translateX(5px);
+        }
+
+        .sidebar a.text-danger {
+            background-color: #dc3545;
+            color: white !important;
+            margin-top: 30px;
+            border-radius: 8px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar a.text-danger:hover {
+            background-color: #c82333;
+            color: white !important;
+            transform: translateX(5px) scale(1.05);
+            box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+        }
+
+        .sidebar a.text-danger i {
+            margin-right: 8px;
+        }
+        .content {
+            padding: 30px;
+        }
+
+        .header-cards {
+            margin-bottom: 30px;
+        }
+
+        .header-card {
+            background: linear-gradient(135deg, #1E9E29 0%, #2CE89C 100%);
+            color: white;
+            border-radius: 15px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(30, 158, 41, 0.2);
+            transition: all 0.3s ease;
+            border: none;
+        }
+
+        .header-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(30, 158, 41, 0.3);
+        }
+
+        .header-card h2 {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.5rem;
+        }
+
+        .header-card p {
+            font-size: 1.1rem;
+            opacity: 0.9;
+            margin-bottom: 15px;
+        }
+
+        .user-stats {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .user-stat {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: rgba(255,255,255,0.2);
+            padding: 12px 20px;
+            border-radius: 10px;
+            min-width: 200px;
+        }
+
+        .user-stat i {
+            font-size: 1.5rem;
+            background: rgba(255,255,255,0.3);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .content-card {
+            border: none;
+            border-radius: 15px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            transition: all 0.3s ease;
+        }
+
+        .content-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+
+        .card-header {
+            background: linear-gradient(135deg, #1E9E29 0%, #2CE89C 100%);
+            color: white;
+            border: none;
+            padding: 20px 25px;
+            border-radius: 15px 15px 0 0 !important;
+            font-weight: 600;
+            font-size: 1.2rem;
+        }
+
+        .card-body {
+            padding: 25px;
+        }
+
+        .form-label {
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #e9ecef;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #1E9E29;
+            box-shadow: 0 0 0 0.25rem rgba(30, 158, 41, 0.25);
+        }
+
+        .btn-primary, .btn-update-profile {
+            background: linear-gradient(135deg, #1E9E29 0%, #2CE89C 100%);
+            border: none;
+            padding: 12px 25px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            color: white;
+            font-size: 1rem;
+        }
+
+        .btn-primary:hover, .btn-update-profile:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(30, 158, 41, 0.4);
+        }
+
+        .btn-outline-primary {
+            border-color: #1E9E29;
+            color: #1E9E29;
+        }
+
+        .btn-outline-primary:hover {
+            background-color: #1E9E29;
+            color: white;
+        }
+
+        .stat-card {
+            border-radius: 12px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: none;
+            box-shadow: 0 3px 10px rgba(0,0,0,0.05);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        }
+
+        .stat-icon {
+            font-size: 2.5rem;
+            margin-bottom: 15px;
+            display: inline-block;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: #1E9E29;
+        }
+
+        .stat-label {
+            font-weight: 500;
+            color: #6c757d;
+        }
+
+        .progress {
+            height: 10px;
+            border-radius: 5px;
+            background-color: #e9ecef;
+        }
+
+        .progress-bar {
+            border-radius: 5px;
+        }
+
+        .table {
+            margin-bottom: 0;
+        }
+
+        .table th {
+            background-color: #f8f9fa;
+            font-weight: 600;
+            color: #495057;
+            border: none;
+            padding: 15px;
+        }
+
+        .table td {
+            padding: 15px;
+            vertical-align: middle;
+            border: none;
+        }
+
+        .table-hover tbody tr:hover {
+            background-color: #f8f9fa;
+        }
+
+        .list-group-item {
+            border: none;
+            padding: 15px 20px;
+            border-radius: 10px;
+            margin-bottom: 10px;
+            background-color: #f8f9fa;
+        }
+
+        .list-group-item:last-child {
+            margin-bottom: 0;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .animate-in {
+            animation: fadeInUp 0.6s ease forwards;
+        }
+
+        @media (max-width: 991.98px) {
+            .sidebar {
+                padding-top: 10px;
+            }
+
+            .content {
+                padding: 20px;
+            }
+
+            .user-stats {
+                flex-direction: column;
+            }
+        }
+
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            display: none;
+        }
+
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #1E9E29;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+
+<body>
+
+<!-- NAVBAR -->
+<div class="navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark container">
+        <a class="navbar-brand py-2">
+            <img th:src="@{/images/homeWeb/brandlogo1.png}" width="35" height="35" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/aboutus}" loading="lazy">About</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/servicesproduct}" loading="lazy">Services</a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/dashboard}">Dashboard</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<!-- END NAVBAR -->
+
+<!-- Loading Overlay -->
+<div class="loading-overlay" id="loadingOverlay">
+    <div class="spinner"></div>
+</div>
+
+<div class="container-fluid">
+    <div th:if="${error}" class="alert alert-warning alert-dismissible fade show mx-3" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+    <div class="row">
+        <!-- Sidebar -->
+        <div class="col-md-3 sidebar">
+            <div class="brand-logo">
+                <h5> SecureLife</h5>
+                <small>Your Trusted Insurance Partner</small>
+            </div>
+            <ul class="nav flex-column">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/feedback/user/{userId}(userId=${user.id})}">
+                        <i class="bi bi-chat-square-text me-2"></i> My Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/feedback/form}">
+                        <i class="bi bi-plus-circle me-2"></i> Submit Feedback
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/payment">
+                        <i class="bi bi-credit-card me-2"></i> Payment
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/user/claims">
+                        <i class="bi bi-file-earmark-medical me-2"></i> Claims
+                    </a>
+                </li>
+                <li class="nav-item mt-3">
+                    <a class="nav-link text-danger d-flex align-items-center" href="/logout">
+                        <i class="bi bi-box-arrow-right me-2"></i>
+                        <span>Logout</span>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Main Content -->
+        <div class="col-md-9 content">
+            <!-- ... your existing dashboard content ... (unchanged) -->
+            <!-- Welcome, Header -->
+            <div class="row header-cards">
+                <div class="col-12 animate-in">
+                    <div class="header-card">
+                        <h2>Welcome Back, <span id="welcomeUserName" th:text="${user.name}">John Doe</span>!</h2>
+                        <p>Manage your insurance policies and account settings</p>
+                        <div class="user-stats">
+                            <div class="user-stat">
+                                <i class="bi bi-person-badge"></i>
+                                <div>
+                                    <div><strong>ID:</strong> <span id="displayUserId" th:text="${user.id}">123</span></div>
+                                </div>
+                            </div>
+                            <div class="user-stat">
+                                <i class="bi bi-telephone"></i>
+                                <div>
+                                    <div><strong>Phone:</strong> <span id="displayUserPhone" th:text="${user.phones != null && !user.phones.isEmpty() ? user.phones[0].phoneNumber : 'Not provided'}">+1234567890</span></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Details Card -->
+            <div class="row">
+                <div class="col-12 animate-in">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <i class="bi bi-person me-2"></i>  Personal Details
+                        </div>
+                        <div class="card-body">
+                            <form id="profileForm">
+                                <input type="hidden" id="userId" th:value="${user.id}">
+
+                                <div class="row">
+                                    <div class="col-md-6 mb-4">
+                                        <label for="name" class="form-label">Full Name</label>
+                                        <input type="text" class="form-control" id="name" th:value="${user.name}" required>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="email" class="form-label">Email (Your Login Username)</label>
+                                        <input type="email" class="form-control" id="email" th:value="${user.email}" required>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="nationalID" class="form-label">National ID</label>
+                                        <input type="text" class="form-control" id="nationalID" th:value="${user.nationalID}" required>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="age" class="form-label">Age</label>
+                                        <input type="number" class="form-control" id="age" th:value="${user.age}" min="0" max="150" required>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="dob" class="form-label">Date of Birth</label>
+                                        <input type="date" class="form-control" id="dob" th:value="${user.dob}" required>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="gender" class="form-label">Gender</label>
+                                        <select class="form-select" id="gender" required>
+                                            <option th:selected="${user.gender == 'Male'}" value="Male">Male</option>
+                                            <option th:selected="${user.gender == 'Female'}" value="Female">Female</option>
+                                            <option th:selected="${user.gender == 'Other'}" value="Other">Other</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="phone1" class="form-label">Phone Number 1</label>
+                                        <input type="text" class="form-control" id="phone1" th:value="${user.phones != null && !user.phones.isEmpty() ? user.phones[0].phoneNumber : ''}">
+                                    </div>
+                                    <div class="col-md-6 mb-4">
+                                        <label for="phone2" class="form-label">Phone Number 2 (Optional)</label>
+                                        <input type="text" class="form-control" id="phone2" th:value="${user.phones != null && user.phones.size() > 1 ? user.phones[1].phoneNumber : ''}">
+                                    </div>
+                                </div>
+
+                                <div class="mb-4">
+                                    <label for="password" class="form-label">Password (Leave blank to keep current)</label>
+                                    <input type="password" class="form-control" id="password" placeholder="••••••••">
+                                </div>
+
+                                <div class="d-flex gap-3 pt-3 border-top">
+                                    <button type="button" class="btn btn-primary" onclick="updateProfile()">
+                                        <i class="bi bi-save me-2"></i> Update Profile
+                                    </button>
+                                    <button type="button" class="btn btn-outline-danger" onclick="deleteProfile()">
+                                        <i class="bi bi-trash me-2"></i> Delete Profile
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Dashboard Statistics -->
+            <div class="row">
+                <div class="col-12 animate-in">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <i class="bi bi-graph-up me-2"></i> Dashboard Statistics
+                        </div>
+                        <div class="card-body">
+                            <div class="row mb-4">
+                                <div class="col-md-6">
+                                    <h6>Profile Completion</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-success" style="width: 85%;"></div>
+                                    </div>
+                                    <small class="text-muted">Complete your profile for better service</small>
+                                </div>
+                                <div class="col-md-6">
+                                    <h6>Claims Processed</h6>
+                                    <div class="progress">
+                                        <div class="progress-bar bg-info" style="width: 60%;"></div>
+                                    </div>
+                                    <small class="text-muted">This year's claims status</small>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="stat-card bg-light">
+                                        <div class="stat-icon text-primary">
+                                            <i class="bi bi-shield-check"></i>
+                                        </div>
+                                        <div class="stat-number">3</div>
+                                        <div class="stat-label">Active Policies</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="stat-card bg-light">
+                                        <div class="stat-icon text-success">
+                                            <i class="bi bi-cash-coin"></i>
+                                        </div>
+                                        <div class="stat-number">12</div>
+                                        <div class="stat-label">Payments Made</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="stat-card bg-light">
+                                        <div class="stat-icon text-warning">
+                                            <i class="bi bi-file-earmark-medical"></i>
+                                        </div>
+                                        <div class="stat-number">2</div>
+                                        <div class="stat-label">Open Claims</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- My Policies -->
+            <div class="row">
+                <div class="col-12 animate-in">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <i class="bi bi-file-earmark-text me-2"></i> My Policies
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Policy #</th>
+                                        <th>Type</th>
+                                        <th>Status</th>
+                                        <th>Start Date</th>
+                                        <th>Premium</th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr>
+                                        <td>PLC-2025-001</td>
+                                        <td>Health Insurance</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>Jan 15, 2025</td>
+                                        <td>$120/month</td>
+                                    </tr>
+                                    <tr>
+                                        <td>PLC-2025-002</td>
+                                        <td>Life Insurance</td>
+                                        <td><span class="badge bg-success">Active</span></td>
+                                        <td>Mar 1, 2025</td>
+                                        <td>$85/month</td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="text-center mt-4">
+                                <a href="#" class="btn btn-outline-primary">View All Policies</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Account Summary -->
+            <div class="row">
+                <div class="col-12 animate-in">
+                    <div class="content-card">
+                        <div class="card-header">
+                            <i class="bi bi-info-circle me-2"></i>  Account Summary
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-4 mb-4">
+                                    <div class="stat-card bg-light">
+                                        <div class="stat-icon text-success">
+                                            <i class="bi bi-calendar-check"></i>
+                                        </div>
+                                        <div class="stat-number">Jan 15, 2025</div>
+                                        <div class="stat-label">Member Since</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="stat-card bg-light">
+                                        <div class="stat-icon text-primary">
+                                            <i class="bi bi-clock-history"></i>
+                                        </div>
+                                        <div class="stat-number">Today, 10:30 AM</div>
+                                        <div class="stat-label">Last Login</div>
+                                    </div>
+                                </div>
+                                <div class="col-md-4 mb-4">
+                                    <div class="stat-card bg-light">
+                                        <div class="stat-icon text-warning">
+                                            <i class="bi bi-file-earmark-medical"></i>
+                                        </div>
+                                        <div class="stat-number">3</div>
+                                        <div class="stat-label">Total Claims</div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row mt-4">
+                                <div class="col-12">
+                                    <div class="alert alert-light border-0">
+                                        <h6 class="mb-2"><i class="bi bi-lightbulb me-2"></i> Quick Tips</h6>
+                                        <ul class="mb-0">
+                                            <li>Update your profile regularly to keep your information current</li>
+                                            <li>Contact support if you need help with claims or payments</li>
+                                            <li>Check your email for important policy updates</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // ... your existing JavaScript ... (unchanged)
+    document.addEventListener('DOMContentLoaded', function() {
+        if (window.location.pathname === '/user/dashboard' ||
+            window.location.pathname.startsWith('/user/')) {
+            fetch('/checkAdminSession')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.isAdmin) {
+                        alert('⛔ Admins cannot access user dashboard. Redirecting to admin dashboard.');
+                        window.location.href = '/UserAdminDashboard';
+                    }
+                })
+                .catch(error => {
+                    console.log('Error checking admin session:', error);
+                });
+        }
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const animateElements = document.querySelectorAll('.animate-in');
+        animateElements.forEach((el, index) => {
+            el.style.animationDelay = `${index * 0.1}s`;
+        });
+    });
+
+    function showLoading() {
+        document.getElementById('loadingOverlay').style.display = 'flex';
+    }
+
+    function hideLoading() {
+        document.getElementById('loadingOverlay').style.display = 'none';
+    }
+
+    async function updateProfile() {
+        const user = {
+            id: parseInt(document.getElementById('userId').value),
+            name: document.getElementById('name').value,
+            dob: document.getElementById('dob').value,
+            nationalID: document.getElementById('nationalID').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value || undefined,
+            gender: document.getElementById('gender').value,
+            age: parseInt(document.getElementById('age').value),
+            phones: []
+        };
+
+        const phone1 = document.getElementById('phone1').value.trim();
+        const phone2 = document.getElementById('phone2').value.trim();
+
+        if (phone1) user.phones.push({ phoneNumber: phone1 });
+        if (phone2) user.phones.push({ phoneNumber: phone2 });
+
+        try {
+            showLoading();
+
+            const response = await fetch('/api/v1/user/UpdateUser', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+
+            if (response.ok) {
+                const updatedUser = await response.json();
+
+                const refreshResponse = await fetch('/user/refreshSession', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(updatedUser)
+                });
+
+                if (refreshResponse.ok) {
+                    hideLoading();
+                    alert('✅ Profile updated successfully!');
+                    updatePageContent(updatedUser);
+                } else {
+                    hideLoading();
+                    alert('✅ Profile updated but session refresh failed. Refreshing page...');
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1000);
+                }
+            } else {
+                hideLoading();
+                const error = await response.text();
+                alert('❌ Failed to update profile: ' + error);
+            }
+        } catch (err) {
+            hideLoading();
+            console.error(err);
+            alert('⚠️ Network error. Please try again.');
+        }
+    }
+
+    async function deleteProfile() {
+        if (!confirm('⚠️ Are you sure you want to DELETE your profile? This action cannot be undone!')) return;
+
+        const userId = document.getElementById('userId').value;
+
+        try {
+            showLoading();
+
+            const response = await fetch(`/api/v1/user/DeleteUser/${userId}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                hideLoading();
+                alert('✅ Profile deleted successfully. Logging out...');
+                window.location.href = '/logout';
+            } else {
+                hideLoading();
+                alert('❌ Failed to delete profile.');
+            }
+        } catch (err) {
+            hideLoading();
+            console.error(err);
+            alert('⚠️ Network error.');
+        }
+    }
+
+    function updatePageContent(user) {
+        const welcomeNameEl = document.getElementById('welcomeUserName');
+        if (welcomeNameEl) {
+            welcomeNameEl.textContent = user.name || '';
+        }
+
+        const userIdEl = document.getElementById('displayUserId');
+        if (userIdEl) {
+            userIdEl.textContent = user.id ?? '';
+        }
+
+        const userPhoneEl = document.getElementById('displayUserPhone');
+        if (userPhoneEl) {
+            userPhoneEl.textContent = (user.phones && user.phones.length > 0 && user.phones[0].phoneNumber)
+                ? user.phones[0].phoneNumber
+                : 'Not provided';
+        }
+
+        document.getElementById('name').value = user.name;
+        document.getElementById('email').value = user.email;
+        document.getElementById('nationalID').value = user.nationalID;
+        document.getElementById('age').value = user.age;
+        document.getElementById('dob').value = user.dob;
+
+        const genderSelect = document.getElementById('gender');
+        for (let i = 0; i < genderSelect.options.length; i++) {
+            if (genderSelect.options[i].value === user.gender) {
+                genderSelect.selectedIndex = i;
+                break;
+            }
+        }
+
+        const phone1Input = document.getElementById('phone1');
+        const phone2Input = document.getElementById('phone2');
+
+        if (phone1Input) {
+            phone1Input.value = (user.phones && user.phones.length > 0) ? (user.phones[0].phoneNumber || '') : '';
+        }
+
+        if (phone2Input) {
+            phone2Input.value = (user.phones && user.phones.length > 1) ? (user.phones[1].phoneNumber || '') : '';
+        }
+    }
+</script>
+
+<!-- FOOTER -->
+<footer class="text-center text-lg-start text-white" style="background-color: #000000; width: 100%;">
+    <div class="container-fluid p-4 pb-0">
+        <section class="">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">SecureLife</h6>
+                    <p>This platform connects policyholders, insurance agents, and administrators with efficient life insurance services and resources.</p>
+                </div>
+
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">SITE MAP</h6>
+                    <p><a class="text-white" th:href="@{/}" loading="lazy">Home</a></p>
+                    <p><a class="text-white" th:href="@{/aboutus}" loading="lazy">About</a></p>
+                    <p><a class="text-white" th:href="@{/servicesproduct}" loading="lazy">Services</a></p>
+                </div>
+
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Useful Sites</h6>
+                    <p><a class="text-white" href="https://ircsl.gov.lk/" target="_blank">IRCSL</a></p>
+                    <p><a class="text-white" href="https://www.who.int/" target="_blank">WHO</a></p>
+                    <p><a class="text-white" href="https://www.cdc.gov/" target="_blank">CDC</a></p>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+                    <p><i class="fas fa-home mr-3"></i> 324, Havelock Road, Colombo 06.</p>
+                    <p><i class="fas fa-envelope mr-3"></i> securelife@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i> +94 112145300</p>
+                    <p><i class="fas fa-print mr-3"></i> +94 112145500</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-3">
+
+        <section class="p-3 pt-0">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-7 col-lg-8 text-center text-md-start">
+                    <div class="p-3">
+                        ©Copyright 2025 securelife.lk | All Rights Reserved | Privacy & Terms | Designed & Developed by EvelutionX Studio
+                    </div>
+                </div>
+                <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://web.facebook.com/profile.php?id=61581494878067" target="_blank" role="button">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/@SecureLife-i4b" target="_blank" role="button">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://api.whatsapp.com/send/?phone=%2B94776749017&text&type=phone_number&app_absent=0" target="_blank" role="button">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</footer>
+<!-- END FOOTER -->
+
+</body>
+</html>

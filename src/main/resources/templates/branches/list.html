@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Branch Directory - SecureLife</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/branch-management.css}">
+    <link rel="icon" type="image/png" th:href="@{/images/homeWeb/title.png}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="branch-page-body">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand py-2" th:href="@{/branches}">
+            <img th:src="@{/images/homeWeb/brandlogo1.png}" width="36" height="36" alt="Logo">
+            <span class="ms-2 fw-semibold">Branch Management</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#branchNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="branchNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                <li class="nav-item"><a class="nav-link active" th:href="@{/branches}"><i class="bi bi-diagram-3 me-1"></i> Branches</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/branches/dashboard}"><i class="bi bi-bar-chart-line me-1"></i> Performance</a></li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="nav-link btn btn-link p-0"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="branch-content">
+    <section class="branch-hero-panel">
+        <div class="container">
+            <div class="row g-4 align-items-center">
+                <div class="col-lg-7">
+                    <span class="hero-pill">SecureLife Branch Network</span>
+                    <h1 class="display-6 fw-semibold text-white mb-3">Branch Directory</h1>
+                    <p class="mb-4 text-white-75">Search, filter, and manage every SecureLife branch inside a refreshed workspace that mirrors the flagship portal experience.</p>
+                    <div class="d-flex flex-wrap gap-2">
+                        <a class="btn btn-light btn-lg branch-primary-action" th:href="@{/branches/new}"><i class="bi bi-plus-circle me-2"></i>Create Branch</a>
+                        <a class="btn btn-outline-light btn-lg" th:href="@{/branches/dashboard}"><i class="bi bi-speedometer2 me-2"></i>Performance Dashboard</a>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="hero-stats-card">
+                        <div class="hero-stat">
+                            <span class="label">Total branches</span>
+                            <span class="value" th:text="${totalBranches}">0</span>
+                        </div>
+                        <div class="hero-stat-divider"></div>
+                        <div class="hero-stat">
+                            <span class="label">Active</span>
+                            <span class="value" th:text="${activeBranches}">0</span>
+                        </div>
+                        <div class="hero-stat">
+                            <span class="label">Inactive</span>
+                            <span class="value" th:text="${inactiveBranches}">0</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div class="container branch-section">
+        <div class="branch-toolbar mb-4">
+            <form class="row gy-3 align-items-center" th:action="@{/branches}" method="get">
+                <div class="col-12 col-md-5">
+                    <label for="keyword" class="form-label small text-uppercase text-muted mb-1">Search</label>
+                    <div class="input-group">
+                        <span class="input-group-text"><i class="bi bi-search"></i></span>
+                        <input type="text" class="form-control" id="keyword" name="keyword" placeholder="Branch name, address or manager" th:value="${keyword}">
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="status" class="form-label small text-uppercase text-muted mb-1">Status</label>
+                    <select class="form-select" id="status" name="status">
+                        <option th:value="${''}" th:selected="${selectedStatus == null}">All statuses</option>
+                        <option th:each="status : ${statuses}" th:value="${status}" th:text="${status.getDisplayName()}" th:selected="${status == selectedStatus}"></option>
+                    </select>
+                </div>
+                <div class="col-12 col-md-4 d-flex gap-2 align-items-end">
+                    <button type="submit" class="btn btn-primary flex-grow-1"><i class="bi bi-filter me-2"></i>Apply filters</button>
+                    <a th:href="@{/branches}" class="btn btn-outline-secondary"><i class="bi bi-arrow-counterclockwise"></i></a>
+                </div>
+            </form>
+        </div>
+
+        <div class="card branch-card">
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0 branch-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Code</th>
+                                <th scope="col">Branch</th>
+                                <th scope="col">Manager</th>
+                                <th scope="col">Contact</th>
+                                <th scope="col">Targets</th>
+                                <th scope="col">Status</th>
+                                <th scope="col" class="text-end">Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:if="${#lists.isEmpty(branches)}">
+                                <td colspan="7" class="text-center py-5">
+                                    <i class="bi bi-clipboard-data text-secondary fs-3 d-block mb-2"></i>
+                                    <p class="text-muted mb-1">No branches found</p>
+                                    <small class="text-muted">Try adjusting your filters or add a new branch.</small>
+                                </td>
+                            </tr>
+                            <tr th:each="branch : ${branches}">
+                                <td class="fw-semibold" th:text="${branch.bCode}">BR001</td>
+                                <td>
+                                    <span class="d-block fw-semibold" th:text="${branch.bName}">Central Branch</span>
+                                    <small class="text-muted" th:text="${branch.bAddress}">123 Main Street</small>
+                                </td>
+                                <td>
+                                    <span class="d-block" th:text="${branch.managerName}">Jane Doe</span>
+                                    <small class="text-muted" th:text="${branch.email}">manager@securelife.lk</small>
+                                </td>
+                                <td>
+                                    <span class="badge text-bg-light branch-pill"><i class="bi bi-telephone me-1"></i><span th:text="${branch.bPhone}">0112345678</span></span>
+                                </td>
+                                <td>
+                                    <div class="d-flex flex-column gap-1">
+                                        <small class="text-muted">Target: <span class="fw-semibold" th:text="${'LKR ' + #numbers.formatDecimal(branch.targetAmount, 0, 'COMMA', 2, 'POINT')}"></span></small>
+                                        <small class="text-muted">Achieved: <span class="fw-semibold" th:text="${'LKR ' + #numbers.formatDecimal(branch.achievedAmount, 0, 'COMMA', 2, 'POINT')}"></span></small>
+                                        <div class="branch-progress">
+                                            <div class="progress-bar" role="progressbar" th:style="${'width:' + branch.achievementPercentage + '%'}"></div>
+                                        </div>
+                                        <small class="text-muted"><span th:text="${branch.achievementPercentage}"></span>% complete</small>
+                                    </div>
+                                </td>
+                                <td>
+                                    <span class="status-badge" th:classappend=" ' ' + ${branch.status}" th:text="${branch.status.getDisplayName()}">Active</span>
+                                </td>
+                                <td class="text-end">
+                                    <div class="btn-group" role="group">
+                                        <a class="btn btn-sm btn-outline-primary branch-action-btn" th:href="@{'/branches/edit/' + ${branch.id}}"><i class="bi bi-pencil-square"></i></a>
+                                        <a class="btn btn-sm btn-outline-danger branch-action-btn" th:href="@{'/branches/delete/' + ${branch.id}}" onclick="return confirm('Are you sure you want to delete this branch?');"><i class="bi bi-trash3"></i></a>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-dark text-white py-3 mt-auto">
+    <div class="container text-center small">
+        <span>SecureLife Branch Operations • Empowering teams island-wide</span>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

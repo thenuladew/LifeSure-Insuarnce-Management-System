@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>User Management Dashboard</title>
+    <!-- Title image -->
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+
+    <link rel="icon" type="image/png" th:href="@{/images/homeWeb/title.png}" />
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            background-color: #FAFCFA;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            padding-top: 68px;
+        }
+
+
+
+        .dashboard-title {
+            font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+            font-weight: 700;
+            font-size: 2.4rem;
+            background: linear-gradient(135deg, #646B69, #646B69);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            margin-bottom: 0;
+            letter-spacing: -0.5px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+        }
+
+        .container {
+            margin-top: 30px;
+        }
+
+        .table th {
+            background-color: #000;
+            color: white;
+        }
+
+        .btn-update {
+            background-color: #007bff;
+            border: none;
+        }
+
+        .btn-delete {
+            background-color: #dc3545;
+            border: none;
+        }
+
+        .modal-header {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .table td {
+            vertical-align: middle;
+        }
+
+        /* Optional: Style clear button */
+        #clearSearch {
+            width: 40px;
+            font-weight: bold;
+            color: #6c757d;
+        }
+
+        .btn-custom-add {
+            background-color: #3BD174; /* Bright green from your title */
+            border-color: #28d130;
+            color: #000 !important;
+            font-weight: 600;
+        }
+
+        .btn-custom-add:hover {
+            background-color: #3BD1BA;
+            border-color: #23b82a;
+            color: #000 !important;
+        }
+
+        .btn-feedback {
+            background-color: #17a2b8;
+            border-color: #17a2b8;
+            color: #fff !important;
+            font-weight: 600;
+        }
+
+        .btn-feedback:hover {
+            background-color: #138496;
+            border-color: #117a8b;
+            color: #fff !important;
+        }
+    </style>
+</head>
+<body>
+
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+        <a class="navbar-brand py-2" th:href="@{/}">
+            <img th:src="@{/images/homeWeb/brandlogo1.png}" width="35" height="35" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/UserAdminDashboard}"> Admin Dashboard</a>
+                </li>
+
+            </ul>
+        </div>
+    </div>
+</nav>
+
+
+
+<div class="container">
+    <!-- ✅ Error message display -->
+    <div th:if="${error}" class="alert alert-warning alert-dismissible fade show" role="alert">
+        <span th:text="${error}"></span>
+        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+    </div>
+
+
+
+
+
+
+        <br>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div style="text-align: center;">  <h1>
+            <i class="fas fa-user me-2"></i> Welcome to User Management
+        </h1></div>
+
+
+        <a href="/admin/logout" class="btn btn-outline-danger">Logout</a>
+    </div>
+
+    <!-- Quick Stats Cards -->
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white">
+                <div class="card-body text-center">
+                    <i class="bi bi-people-fill fa-2x mb-2"></i>
+                    <h4 id="totalUsers">0</h4>
+                    <small>Total Users</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="d-flex gap-2 mb-3">
+        <button type="button" class="btn btn-custom-add" data-bs-toggle="modal" data-bs-target="#addUserModal">
+            <i class="bi bi-person-plus me-2"></i>Add User
+        </button>
+        <a href="/feedback/admin" class="btn btn-feedback">
+            <i class="bi bi-chat-dots me-2"></i>View Customer Feedback
+        </a>
+    </div>
+
+
+
+    <!-- Search Bar -->
+    <div class="mb-3">
+        <div class="input-group">
+            <span class="input-group-text">
+                <i class="bi bi-search"></i>
+            </span>
+            <input type="text" id="searchInput" class="form-control" placeholder="Search users by name, email, ID, or phone...">
+            <button class="btn btn-outline-secondary" type="button" id="clearSearch" style="display:none;">×</button>
+        </div>
+    </div>
+
+    <div id="usersTableContainer">
+        <table class="table table-striped table-hover">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>DOB</th>
+                <th>Phone Numbers</th>
+                <th>Email</th>
+                <th>Gender</th>
+                <th>Age</th>
+                <th>Action</th>
+            </tr>
+            </thead>
+            <tbody id="userList">
+            <!-- Users will be loaded here -->
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Add User Modal -->
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addUserModalLabel">Add New User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="name" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="name" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="dob" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="dob" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone1" class="form-label">Phone Number 1</label>
+                                    <input type="text" class="form-control" id="phone1" placeholder="+1234567890" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="phone2" class="form-label">Phone Number 2 (Optional)</label>
+                                    <input type="text" class="form-control" id="phone2" placeholder="+0987654321">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="nationalID" class="form-label">National ID</label>
+                                    <input type="text" class="form-control" id="nationalID" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="email" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="password" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="password" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="gender" class="form-label">Gender</label>
+                                    <select class="form-control" id="gender" required>
+                                        <option value="">-- Select --</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="age" class="form-label">Age</label>
+                                    <input type="number" class="form-control" id="age" min="0" max="150" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-success">Save User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Edit User Modal -->
+    <div class="modal fade" id="editUserModal" tabindex="-1" aria-labelledby="editUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editUserForm">
+                        <input type="hidden" id="editUserId" value="">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editName" class="form-label">Name</label>
+                                    <input type="text" class="form-control" id="editName" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editDob" class="form-label">Date of Birth</label>
+                                    <input type="date" class="form-control" id="editDob" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editPhone1" class="form-label">Phone Number 1</label>
+                                    <input type="text" class="form-control" id="editPhone1" placeholder="+1234567890" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editPhone2" class="form-label">Phone Number 2 (Optional)</label>
+                                    <input type="text" class="form-control" id="editPhone2" placeholder="+0987654321">
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editNationalID" class="form-label">National ID</label>
+                                    <input type="text" class="form-control" id="editNationalID" required>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="mb-3">
+                                    <label for="editEmail" class="form-label">Email</label>
+                                    <input type="email" class="form-control" id="editEmail" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editPassword" class="form-label">Password</label>
+                                    <input type="password" class="form-control" id="editPassword" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editGender" class="form-label">Gender</label>
+                                    <select class="form-control" id="editGender" required>
+                                        <option value="">-- Select --</option>
+                                        <option value="Male">Male</option>
+                                        <option value="Female">Female</option>
+                                        <option value="Other">Other</option>
+                                    </select>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="editAge" class="form-label">Age</label>
+                                    <input type="number" class="form-control" id="editAge" min="0" max="150" required>
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-warning">Update User</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- FOOTER -->
+<footer class="bg-dark text-white py-4 mt-5">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+                <h5>SecureLife</h5>
+                <p class="mb-0">Your trusted partner in life insurance</p>
+            </div>
+            <div class="col-md-6 text-md-end">
+                <p class="mb-0">&copy; 2024 SecureLife. All rights reserved.</p>
+            </div>
+        </div>
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    let allUsers = [];
+
+    document.addEventListener('DOMContentLoaded', function () {
+        fetchUsers();
+
+        // Search input handling
+        const searchInput = document.getElementById('searchInput');
+        const clearBtn = document.getElementById('clearSearch');
+
+        searchInput.addEventListener('input', function () {
+            const term = this.value.trim().toLowerCase();
+            clearBtn.style.display = term ? 'block' : 'none';
+
+            if (!term) {
+                renderUsers(allUsers);
+                return;
+            }
+
+            const filtered = allUsers.filter(user =>
+                user.name.toLowerCase().includes(term) ||
+                user.email.toLowerCase().includes(term) ||
+                user.id.toString().includes(term) ||
+                (user.phones && user.phones.some(p => p.phoneNumber.includes(term)))
+            );
+
+            renderUsers(filtered);
+        });
+
+        clearBtn.addEventListener('click', function () {
+            searchInput.value = '';
+            clearBtn.style.display = 'none';
+            renderUsers(allUsers);
+        });
+
+    });
+
+    async function fetchUsers() {
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/user/ReadUsers');
+            if (!response.ok) throw new Error("Failed to fetch users");
+            allUsers = await response.json();
+            renderUsers(allUsers);
+            updateUserCount();
+        } catch (err) {
+            console.error("Error fetching users:", err);
+            alert("Failed to load users.");
+        }
+    }
+
+
+    function updateUserCount() {
+        document.getElementById('totalUsers').textContent = allUsers.length;
+    }
+
+    function renderUsers(users) {
+        const tbody = document.getElementById('userList');
+        tbody.innerHTML = '';
+
+        if (users.length === 0) {
+            tbody.innerHTML = `<tr><td colspan="8" class="text-center">No users found.</td></tr>`;
+            return;
+        }
+
+        users.forEach(user => {
+            const phoneNumbers = user.phones?.map(p => p.phoneNumber).join('<br>') || '—';
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td>${user.id}</td>
+                <td>${user.name}</td>
+                <td>${user.dob}</td>
+                <td>${phoneNumbers}</td>
+                <td>${user.email}</td>
+                <td>${user.gender}</td>
+                <td>${user.age}</td>
+                <td>
+                    <button class="btn btn-sm btn-update"
+                        onclick="openEditModal(${user.id},
+                            '${user.name.replace(/'/g, "\\\\'")}',
+                            '${user.dob}',
+                            '${user.phones?.[0]?.phoneNumber || ''}',
+                            '${user.phones?.[1]?.phoneNumber || ''}',
+                            '${user.nationalID}',
+                            '${user.email}',
+                            '${user.password}',
+                            '${user.gender}',
+                            ${user.age})">
+                        Update
+                    </button>
+                    <button class="btn btn-sm btn-delete" onclick="deleteUser(${user.id})">Delete</button>
+                </td>
+            `;
+            tbody.appendChild(row);
+        });
+    }
+
+    // === Form & Modal Handlers ===
+
+    document.getElementById('addUserForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const phones = [];
+        const phone1 = document.getElementById('phone1').value.trim();
+        const phone2 = document.getElementById('phone2').value.trim();
+
+        if (phone1) phones.push({ phoneNumber: phone1 });
+        if (phone2) phones.push({ phoneNumber: phone2 });
+
+        const user = {
+            name: document.getElementById('name').value,
+            dob: document.getElementById('dob').value,
+            nationalID: document.getElementById('nationalID').value,
+            email: document.getElementById('email').value,
+            password: document.getElementById('password').value,
+            gender: document.getElementById('gender').value,
+            age: parseInt(document.getElementById('age').value),
+            phones: phones
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/user/CreateUser', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+
+            if (response.ok) {
+                alert('User added successfully!');
+                fetchUsers();
+                this.reset();
+                bootstrap.Modal.getInstance(document.getElementById('addUserModal')).hide();
+            } else {
+                const errorText = await response.text();
+                alert('Error creating user: ' + errorText);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Network error.');
+        }
+    });
+
+    function openEditModal(id, name, dob, phone1, phone2, nationalID, email, password, gender, age) {
+        document.getElementById('editUserId').value = id;
+        document.getElementById('editName').value = name;
+        document.getElementById('editDob').value = dob;
+        document.getElementById('editPhone1').value = phone1 || '';
+        document.getElementById('editPhone2').value = phone2 || '';
+        document.getElementById('editNationalID').value = nationalID;
+        document.getElementById('editEmail').value = email;
+        document.getElementById('editPassword').value = password;
+        document.getElementById('editGender').value = gender;
+        document.getElementById('editAge').value = age;
+        new bootstrap.Modal(document.getElementById('editUserModal')).show();
+    }
+
+    document.getElementById('editUserForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const phones = [];
+        const phone1 = document.getElementById('editPhone1').value.trim();
+        const phone2 = document.getElementById('editPhone2').value.trim();
+
+        if (phone1) phones.push({ phoneNumber: phone1 });
+        if (phone2) phones.push({ phoneNumber: phone2 });
+
+        const user = {
+            id: parseInt(document.getElementById('editUserId').value),
+            name: document.getElementById('editName').value,
+            dob: document.getElementById('editDob').value,
+            nationalID: document.getElementById('editNationalID').value,
+            email: document.getElementById('editEmail').value,
+            password: document.getElementById('editPassword').value,
+            gender: document.getElementById('editGender').value,
+            age: parseInt(document.getElementById('editAge').value),
+            phones: phones
+        };
+
+        try {
+            const response = await fetch('http://localhost:8080/api/v1/user/UpdateUser', {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(user)
+            });
+
+            if (response.ok) {
+                alert('User updated successfully!');
+                fetchUsers();
+                bootstrap.Modal.getInstance(document.getElementById('editUserModal')).hide();
+            } else {
+                const errorText = await response.text();
+                alert('Error updating user: ' + errorText);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Network error.');
+        }
+    });
+
+    async function deleteUser(id) {
+        if (!confirm('Are you sure you want to delete this user? This will also delete all their feedback.')) return;
+
+        try {
+            const response = await fetch(`http://localhost:8080/api/v1/user/DeleteUser/${id}`, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                const result = await response.json();
+                if (result === true) {
+                    alert('User and all associated feedback deleted successfully!');
+                    fetchUsers();
+                } else {
+                    alert('Failed to delete user. Please try again.');
+                }
+            } else {
+                const errorText = await response.text();
+                alert('Error deleting user: ' + errorText);
+            }
+        } catch (err) {
+            console.error(err);
+            alert('Network error. Please check your connection and try again.');
+        }
+    }
+</script>
+
+</body>
+</html>

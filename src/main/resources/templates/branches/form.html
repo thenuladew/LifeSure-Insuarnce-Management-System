@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title th:text="${branch.id == null} ? 'Create Branch - SecureLife' : 'Update Branch - SecureLife'">Branch Form</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/branch-management.css}">
+    <link rel="icon" type="image/png" th:href="@{/images/homeWeb/title.png}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="branch-page-body">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top shadow-sm">
+    <div class="container">
+        <a class="navbar-brand py-2" th:href="@{/branches}">
+            <img th:src="@{/images/homeWeb/brandlogo1.png}" width="36" height="36" alt="Logo">
+            <span class="ms-2 fw-semibold">Branch Management</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#branchNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="branchNav">
+            <ul class="navbar-nav ms-auto align-items-lg-center gap-lg-2">
+                <li class="nav-item"><a class="nav-link" th:href="@{/branches}"><i class="bi bi-diagram-3 me-1"></i> Branches</a></li>
+                <li class="nav-item"><a class="nav-link" th:href="@{/branches/dashboard}"><i class="bi bi-bar-chart-line me-1"></i> Performance</a></li>
+                <li class="nav-item">
+                    <form th:action="@{/logout}" method="post" class="d-inline">
+                        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                        <button type="submit" class="nav-link btn btn-link p-0"><i class="bi bi-box-arrow-right me-1"></i> Logout</button>
+                    </form>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+<main class="branch-content">
+    <div class="container">
+        <div class="card branch-card">
+            <div class="card-header bg-white border-0 p-4 pb-3">
+                <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                        <h1 class="h4 fw-bold text-gradient mb-1" th:text="${branch.id == null} ? 'Create New Branch' : 'Update Branch'">Branch Form</h1>
+                        <p class="text-muted mb-0">Provide accurate details to keep branch records up-to-date.</p>
+                    </div>
+                    <a class="btn btn-outline-secondary" th:href="@{/branches}"><i class="bi bi-arrow-left me-2"></i>Back to list</a>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <form th:action="${branch.id == null} ? @{/branches} : @{/branches}" method="post" th:object="${branch}" class="row g-4">
+                    <input type="hidden" th:if="${branch.id != null}" name="_method" value="put" />
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}" />
+                    <input type="hidden" th:field="*{id}" />
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Branch Code</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-hash"></i></span>
+                <input type="text"
+                    th:field="*{bCode}"
+                    class="form-control"
+                    placeholder="e.g. BR101"
+                    required
+                    pattern="BR[0-9]{3}"
+                    maxlength="5"
+                    inputmode="latin-prose"
+                    oninvalid="setBranchCodeValidity(this)"
+                    oninput="setBranchCodeValidity(this)">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('bCode')}" th:errors="*{bCode}"></div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Branch Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-building"></i></span>
+                            <input type="text" th:field="*{bName}" class="form-control" placeholder="Enter branch name" required minlength="3" maxlength="100">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('bName')}" th:errors="*{bName}"></div>
+                    </div>
+
+                    <div class="col-12">
+                        <label class="form-label">Branch Address</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-geo-alt"></i></span>
+                            <input type="text" th:field="*{bAddress}" class="form-control" placeholder="Street, City" required maxlength="200">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('bAddress')}" th:errors="*{bAddress}"></div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Contact Number</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-telephone"></i></span>
+                <input type="text"
+                    th:field="*{bPhone}"
+                    class="form-control"
+                    placeholder="0771234567"
+                                   required
+                                   inputmode="numeric"
+                                   maxlength="10"
+                    oninvalid="setContactNumberValidity(this)"
+                    oninput="setContactNumberValidity(this)">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('bPhone')}" th:errors="*{bPhone}"></div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Manager Name</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-person-badge"></i></span>
+                            <input type="text" th:field="*{managerName}" class="form-control" placeholder="Manager full name" required minlength="2" maxlength="100">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('managerName')}" th:errors="*{managerName}"></div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Official Email</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-envelope"></i></span>
+                            <input type="email" th:field="*{email}" class="form-control" placeholder="branch@securelife.lk" required maxlength="100">
+                        </div>
+                        <div class="invalid-feedback d-block" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Status</label>
+                        <select class="form-select" th:field="*{status}">
+                            <option th:each="status : ${statuses}" th:value="${status}" th:text="${status.getDisplayName()}"></option>
+                        </select>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Target Amount (LKR)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-graph-up"></i></span>
+                            <input type="number" min="0" step="0.01" th:field="*{targetAmount}" class="form-control" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6">
+                        <label class="form-label">Achieved Amount (LKR)</label>
+                        <div class="input-group">
+                            <span class="input-group-text"><i class="bi bi-trophy"></i></span>
+                            <input type="number" min="0" step="0.01" th:field="*{achievedAmount}" class="form-control" placeholder="0.00">
+                        </div>
+                    </div>
+
+                    <div class="col-12">
+                        <div class="d-flex flex-column flex-lg-row gap-3 justify-content-between align-items-lg-center">
+                            <div class="text-muted small">
+                                <i class="bi bi-info-circle me-2"></i>Branch credentials are managed in the security module. Contact IT support for new logins.
+                            </div>
+                            <div class="d-flex gap-2">
+                                <a class="btn btn-outline-secondary" th:href="@{/branches}">Cancel</a>
+                                <button type="submit" class="btn btn-success" th:text="${branch.id == null} ? 'Create Branch' : 'Update Branch'"></button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+
+<footer class="bg-dark text-white py-3 mt-auto">
+    <div class="container text-center small">
+        SecureLife Branch Operations • Data is synchronized every 15 minutes
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function setValidityMessages(field, { requiredMessage, patternMessage }) {
+        if (field.validity.valueMissing) {
+            field.setCustomValidity(requiredMessage);
+        } else if (field.validity.patternMismatch || field.validity.tooShort || field.validity.tooLong) {
+            field.setCustomValidity(patternMessage);
+        } else {
+            field.setCustomValidity('');
+        }
+    }
+
+    function setBranchCodeValidity(field) {
+        setValidityMessages(field, {
+            requiredMessage: 'Branch code is required.',
+            patternMessage: 'Use format BR followed by three digits, e.g., BR001.'
+        });
+    }
+
+    function sanitizeNumericField(field) {
+        const sanitized = field.value.replace(/[^0-9]/g, '');
+        if (field.value !== sanitized) {
+            field.value = sanitized;
+        }
+        return sanitized;
+    }
+
+    function setContactNumberValidity(field) {
+        const sanitized = sanitizeNumericField(field);
+        if (sanitized.length === 10) {
+            field.setCustomValidity('');
+        } else if (sanitized.length === 0) {
+            field.setCustomValidity('Contact number is required.');
+        } else {
+            field.setCustomValidity('Contact number must be exactly 10 digits, e.g., 0771234567.');
+        }
+    }
+</script>
+</body>
+</html>

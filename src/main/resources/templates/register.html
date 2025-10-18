@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - LifeSure Insurance</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f8f9fa;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .container-fluid, .row {
+            height: 100%;
+        }
+
+        /* Branding Section Styling */
+        .branding-section {
+            background-image: url('/images/homeWeb/AdminLogin.jpg');
+            color: #ffffff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 40px;
+            height: 100vh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .branding-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: 1;
+        }
+
+        .branding-content {
+            position: relative;
+            z-index: 2;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .branding-content h1 {
+            font-weight: 700;
+            letter-spacing: 1px;
+            font-size: 2.8rem;
+        }
+
+        .branding-content p {
+            font-size: 1.3rem;
+            font-weight: 300;
+        }
+
+        /* Form Section Styling */
+        .form-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+            background-color: #ffffff;
+            height: 100vh;
+            overflow-y: auto;
+        }
+
+        .form-wrapper {
+            max-width: 700px;
+            width: 100%;
+            animation: slideInUp 1s ease-in-out;
+        }
+
+        .logo {
+            display: block;
+            margin: 0 auto;
+            width: 80px;
+            height: 80px;
+            background: #667eea;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .logo svg {
+            width: 40px;
+            height: 40px;
+            fill: white;
+        }
+
+        .form-section h2 {
+            font-weight: 600;
+            text-align: center;
+            color: #212529;
+            margin-bottom: 30px;
+        }
+
+        .form-control, .form-select {
+            border-radius: 8px;
+            padding: 12px 15px;
+            border: 1px solid #ced4da;
+            transition: all 0.3s ease;
+            font-size: 1rem;
+        }
+
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.25rem rgba(102, 126, 234, 0.2);
+        }
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper i {
+            position: absolute;
+            top: 50%;
+            right: 15px;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #6c757d;
+        }
+
+        .btn-register {
+            background: linear-gradient(135deg, #25A892 0%, #8b62b5 100%);
+            border: none;
+            padding: 12px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            color: white;
+            font-size: 1.1rem;
+        }
+
+        .btn-register:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        /* Error and Success Messages */
+        .alert {
+            margin-bottom: 20px;
+            border-radius: 8px;
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes slideInUp {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 991.98px) {
+            body {
+                overflow: auto;
+            }
+            .branding-section {
+                display: none;
+            }
+            .form-section {
+                padding: 40px 25px;
+            }
+            .form-wrapper {
+                max-width: 100%;
+            }
+        }
+
+        /* Required asterisk */
+        .form-label::after {
+            content: " *";
+            color: #dc3545;
+        }
+
+        .form-label.optional::after {
+            content: "";
+        }
+    </style>
+</head>
+<body>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-5 branding-section">
+            <div class="branding-content">
+                <h1 class="display-4">SecureLife</h1>
+                <p class="lead">Join with us and secure your future</p>
+            </div>
+        </div>
+
+        <div class="col-lg-7 form-section">
+            <div class="form-wrapper">
+
+
+
+
+                <h2 class="mb-4">Create Your Account</h2>
+
+                <!-- KEEPING ORIGINAL LOGIC -->
+                <form th:action="@{/register}" method="post" th:object="${userDTO}">
+                    <!-- Success Message -->
+                    <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                        <span th:text="${success}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <!-- Error Message -->
+                    <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <span th:text="${error}"></span>
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" th:value="*{name}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="email" class="form-label">Email (Username)</label>
+                            <input type="email" class="form-control" id="email" name="email" th:value="*{email}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="password" class="form-label">Password</label>
+                            <div class="password-wrapper">
+                                <input type="password" class="form-control" id="password" name="password" th:value="*{password}" required>
+                                <i class="bi bi-eye-slash-fill" id="togglePassword1"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="confirmPassword" class="form-label">Confirm Password</label>
+                            <div class="password-wrapper">
+                                <input type="password" class="form-control" id="confirmPassword" required>
+                                <i class="bi bi-eye-slash-fill" id="togglePassword2"></i>
+                            </div>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="dob" class="form-label">Date of Birth</label>
+                            <input type="date" class="form-control" id="dob" name="dob" th:value="*{dob}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="nationalID" class="form-label">National ID</label>
+                            <input type="text" class="form-control" id="nationalID" name="nationalID" th:value="*{nationalID}" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" name="gender" th:value="*{gender}" required>
+                                <option value="">-- Select --</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" th:value="*{age}" min="0" max="150" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone1" class="form-label">Phone Number 1</label>
+                            <input type="text" class="form-control" id="phone1" name="phones[0].phoneNumber" placeholder="" required>
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="phone2" class="form-label optional">Phone Number 2</label>
+                            <input type="text" class="form-control" id="phone2" name="phones[1].phoneNumber" placeholder="">
+                        </div>
+                    </div>
+
+                    <div class="d-grid mt-4">
+                        <button type="submit" class="btn btn-primary btn-register">Register Now</button>
+                    </div>
+                </form>
+
+                <p class="mt-4 text-center text-muted">
+                    Already have an account? <a href="/login" class="text-decoration-none">Login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap Bundle JS -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- Password Toggle Script -->
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Password toggle for first password field
+        const togglePassword1 = document.querySelector('#togglePassword1');
+        const password1 = document.querySelector('#password');
+
+        if (togglePassword1 && password1) {
+            togglePassword1.addEventListener('click', function () {
+                const type = password1.getAttribute('type') === 'password' ? 'text' : 'password';
+                password1.setAttribute('type', type);
+                this.classList.toggle('bi-eye-fill');
+                this.classList.toggle('bi-eye-slash-fill');
+            });
+        }
+
+        // Password toggle for confirm password field
+        const togglePassword2 = document.querySelector('#togglePassword2');
+        const password2 = document.querySelector('#confirmPassword');
+
+        if (togglePassword2 && password2) {
+            togglePassword2.addEventListener('click', function () {
+                const type = password2.getAttribute('type') === 'password' ? 'text' : 'password';
+                password2.setAttribute('type', type);
+                this.classList.toggle('bi-eye-fill');
+                this.classList.toggle('bi-eye-slash-fill');
+            });
+        }
+    });
+</script>
+
+<!-- Password Confirmation Validation -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const form = document.querySelector('form');
+
+        if (form) {
+            form.addEventListener('submit', function(event) {
+                const password = document.getElementById('password');
+                const confirmPassword = document.getElementById('confirmPassword');
+                const confirmPasswordField = document.querySelector('.password-wrapper:nth-child(2) .form-control');
+
+                if (password.value !== confirmPassword.value) {
+                    event.preventDefault();
+                    alert("Passwords do not match. Please try again.");
+                    confirmPassword.focus();
+                    confirmPasswordField.classList.add('is-invalid');
+                } else {
+                    confirmPasswordField.classList.remove('is-invalid');
+                }
+            });
+        }
+    });
+</script>
+
+</body>
+</html>

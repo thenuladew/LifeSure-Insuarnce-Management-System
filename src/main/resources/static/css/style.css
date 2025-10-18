@@ -1,0 +1,130 @@
+
+/* -------------------------------------
+color , font and variables setup
+--------------------------------------*/
+
+:root {
+
+    --c-primary: #351b70;
+    --c-secondry: #000000;
+    --c-third: #1e7b25;
+
+    --font-base:"poppins" , sans-serif;
+
+}
+
+body{
+    font-family: var(--font-base);
+    font-size: 16px;
+    line-height: 1.6;
+}
+
+
+.h1 .h2 .h3 .h4 .h5 .h6 {
+    font-weight: 600;}
+
+a {
+    text-decoration: none;
+    color: var(--c-primary);
+}
+
+
+a:hover {
+    color: var(--c-primary);
+}
+
+.section-padding {
+    padding-top: 120px;
+    padding-bottom: 120px;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* -------------------------------------
+button    setup
+--------------------------------------*/
+
+.btn-primary {
+    background-color: var(--c-third) !important;
+}
+
+
+/* -------------------------------------
+navbar    setup
+--------------------------------------*/
+
+.navbar {
+    font-family: var(--font-base);
+    font-size: 16px;
+    font-weight: 500;
+}
+
+.navbar-dark {
+    background-color: var(--c-secondry );
+}
+
+
+
+
+
+/* -------------------------------------
+hero section   setup
+--------------------------------------*/
+
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap");
+
+body {
+    font-family: "Poppins", sans-serif !important;
+}
+
+
+/* -------------------------------------
+footer   setup
+--------------------------------------*/
+
+
+footer a {
+    text-decoration: none !important;
+}
+
+
+
+/* -------------------------------------
+course home page link  setup
+--------------------------------------*/
+
+.removeunderline{
+    text-decoration: none !important;
+}
+
+
+
+
+/* -------------------------------------
+LOGIN page  setup
+--------------------------------------*/
+
+
+.divider:after,
+.divider:before {
+    content: "";
+    flex: 1;
+    height: 1px;
+    background: #eee;
+}
+.h-custom {
+    height: calc(100% - 73px);
+}
+@media (max-width: 450px) {
+    .h-custom {
+        height: 100%;
+    }
+}
+
+
+
+
