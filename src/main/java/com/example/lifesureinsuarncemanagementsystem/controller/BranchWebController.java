@@ -22,8 +22,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.example.lifesureinsuarncemanagementsystem.dtos.BranchPerformanceForm;
 
-import com.example.lifesureinsuarncemanagementsystem.entity.Branch;
-import com.example.lifesureinsuarncemanagementsystem.entity.BranchStatus;
+import com.example.lifesureinsuarncemanagementsystem.model.Branch;
+import com.example.lifesureinsuarncemanagementsystem.model.BranchStatus;
 import com.example.lifesureinsuarncemanagementsystem.service.BranchService;
 
 import jakarta.validation.Valid;
@@ -39,7 +39,20 @@ public class BranchWebController {
     public String listBranches(@RequestParam(required = false) String keyword,
                                @RequestParam(required = false) BranchStatus status,
                                Model model) {
-        model.addAttribute("branches", branchServices.getBranches(keyword, status));
+    List<Branch> branches = branchServices.getBranches(keyword, status);
+
+    long activeCount = branches.stream()
+        .filter(branch -> BranchStatus.ACTIVE.equals(branch.getStatus()))
+        .count();
+
+    long inactiveCount = branches.stream()
+        .filter(branch -> BranchStatus.INACTIVE.equals(branch.getStatus()))
+        .count();
+
+    model.addAttribute("branches", branches);
+    model.addAttribute("totalBranches", branches.size());
+    model.addAttribute("activeBranches", activeCount);
+    model.addAttribute("inactiveBranches", inactiveCount);
         model.addAttribute("keyword", keyword);
         model.addAttribute("selectedStatus", status);
         return "branches/list";
@@ -102,6 +115,9 @@ public class BranchWebController {
             populatePerformanceDashboard(model);
             model.addAttribute("errorBranchId", id);
             model.addAttribute("performanceErrorMessage", "Please provide valid values (0 or positive, up to 2 decimals).");
+            model.addAttribute("performanceErrors", result.getFieldErrors().stream()
+                    .collect(Collectors.toMap(fieldError -> fieldError.getField(), fieldError -> fieldError.getDefaultMessage(),
+                            (existing, replacement) -> existing)));
             model.addAttribute("performanceForm", performanceForm);
             return "branches/dashboard";
         }

@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.lifesureinsuarncemanagementsystem.dtos.BranchPerformanceForm;
-import com.example.lifesureinsuarncemanagementsystem.entity.Branch;
-import com.example.lifesureinsuarncemanagementsystem.entity.BranchStatus;
+import com.example.lifesureinsuarncemanagementsystem.model.Branch;
+import com.example.lifesureinsuarncemanagementsystem.model.BranchStatus;
 import com.example.lifesureinsuarncemanagementsystem.service.BranchService;
 
 import jakarta.validation.Valid;

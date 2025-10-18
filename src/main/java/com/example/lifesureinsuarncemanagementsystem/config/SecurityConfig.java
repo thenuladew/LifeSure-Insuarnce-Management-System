@@ -16,17 +16,28 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+            .csrf(csrf -> csrf
+                .ignoringRequestMatchers("/api/**")
+            )
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/css/**", "/js/**", "/images/**", "/login", "/error").permitAll()
-                .requestMatchers("/branches/**").hasAuthority("HEAD_MANAGER")
-                .anyRequest().authenticated()
+                .requestMatchers("/css/**", "/js/**", "/images/**", "/branch/login", "/error").permitAll()
+                .requestMatchers("/api/branches/**", "/branches/**").hasAnyAuthority("HEAD_MANAGER", "MANAGER")
+                .anyRequest().permitAll()
             )
             .formLogin(form -> form
-                .loginPage("/login")
+                .loginPage("/branch/login")
+                .loginProcessingUrl("/branch/login")
                 .defaultSuccessUrl("/branches", true)
                 .permitAll()
             )
-            .logout(logout -> logout.permitAll())
+            .logout(logout -> logout
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/login?logout")
+                .permitAll()
+            )
+            .exceptionHandling(ex -> ex
+                .accessDeniedPage("/branch/login?denied")
+            )
             .httpBasic(Customizer.withDefaults());
 
         return http.build();

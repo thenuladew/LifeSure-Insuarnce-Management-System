@@ -7,8 +7,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.example.lifesureinsuarncemanagementsystem.entity.Branch;
-import com.example.lifesureinsuarncemanagementsystem.entity.BranchStatus;
+import com.example.lifesureinsuarncemanagementsystem.model.Branch;
+import com.example.lifesureinsuarncemanagementsystem.model.BranchStatus;
 
 public interface BranchRepository extends JpaRepository<Branch, Long> {
 

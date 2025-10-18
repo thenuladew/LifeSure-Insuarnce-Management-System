@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="">
+<head>
+    <link rel="icon" type="image/png" th:href="@{/images/homeWeb/title.png}" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Feedback - SecureLife</title>
+
+    <!-- CSS Links -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <style>
+        .feedback-card {
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .feedback-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1) !important;
+        }
+
+        .rating-display .stars {
+            display: inline-block;
+            margin-left: 0.5rem;
+        }
+
+        .empty-state {
+            padding: 3rem 0;
+        }
+
+        .card-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+        }
+
+        .card-text {
+            line-height: 1.4;
+        }
+    </style>
+</head>
+<body style="background-color: #EDF5EF;">
+
+<!-- NAVBAR -->
+<div class="navbar-dark">
+    <nav class="navbar navbar-expand-lg navbar-dark container">
+        <a class="navbar-brand py-2" th:href="@{/}">
+            <img th:src="@{/images/homeWeb/brandlogo1.png}" width="35" height="35" alt="Logo">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/user/dashboard}">Dashboard</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/feedback/form}">Submit Feedback</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/logout}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</div>
+<!-- END NAVBAR -->
+
+<!-- MAIN CONTENT -->
+<div class="container my-5">
+    <div class="row">
+        <div class="col-12">
+            <!-- Header -->
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <div>
+                    <h1 class="display-5 text-success">
+                        <i class="fas fa-comment-dots me-3"></i>My Feedback
+                    </h1>
+                    <p class="text-muted">Manage your feedback submissions</p>
+                </div>
+                <a th:href="@{/feedback/form}" class="btn btn-primary btn-lg">
+                    <i class="fas fa-plus me-2"></i>Submit New Feedback
+                </a>
+            </div>
+
+            <!-- Flash Messages -->
+            <div th:if="${success}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i>
+                <span th:text="${success}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <div th:if="${error}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i>
+                <span th:text="${error}"></span>
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+
+            <!-- Feedback List -->
+            <div th:if="${feedbacks != null and !feedbacks.empty}" class="row">
+                <div th:each="feedback : ${feedbacks}" class="col-lg-6 col-xl-4 mb-4">
+                    <div class="card h-100 shadow-sm border-0 feedback-card">
+                        <div class="card-header d-flex justify-content-between align-items-center">
+                            <span class="badge" 
+                                  th:classappend="${feedback.status.name() == 'PENDING'} ? 'bg-warning' : 
+                                                (${feedback.status.name() == 'IN_PROGRESS'} ? 'bg-info' : 
+                                                (${feedback.status.name() == 'RESOLVED'} ? 'bg-success' : 'bg-secondary'))"
+                                  th:text="${feedback.statusDisplayName}">
+                            </span>
+                            <small class="text-muted" th:text="${#temporals.format(feedback.createdAt, 'MMM dd, yyyy')}"></small>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title text-truncate" th:text="${feedback.subject}"></h5>
+                            <p class="card-text text-muted small" th:text="${#strings.abbreviate(feedback.message, 100)}"></p>
+                            
+                            <!-- Rating -->
+                            <div class="rating-display mb-3">
+                                <span class="text-muted small">Rating:</span>
+                                <div class="stars">
+                                    <i th:each="i : ${#numbers.sequence(1, 5)}" 
+                                       class="fas fa-star" 
+                                       th:classappend="${i <= feedback.rating} ? 'text-warning' : 'text-muted'">
+                                    </i>
+                                </div>
+                            </div>
+                            
+                            <!-- Category -->
+                            <div class="mb-3">
+                                <span class="badge bg-light text-dark" th:text="${feedback.categoryDisplayName}"></span>
+                            </div>
+                        </div>
+                        <div class="card-footer bg-transparent">
+                            <div class="d-flex justify-content-end">
+                                <div>
+                                    <a th:href="@{/feedback/edit/{id}(id=${feedback.id}, userId=${userId})}" 
+                                       class="btn btn-outline-secondary btn-sm me-1">
+                                        <i class="fas fa-edit me-1"></i>Edit
+                                    </a>
+                                    <button type="button" 
+                                            class="btn btn-outline-danger btn-sm" 
+                                            th:onclick="'deleteFeedback(' + ${feedback.id} + ')'">
+                                        <i class="fas fa-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Empty State -->
+            <div th:if="${feedbacks == null or feedbacks.empty}" class="text-center py-5">
+                <div class="empty-state">
+                    <i class="fas fa-comment-slash text-muted" style="font-size: 4rem;"></i>
+                    <h3 class="text-muted mt-3">No Feedback Yet</h3>
+                    <p class="text-muted">You haven't submitted any feedback yet. Share your thoughts with us!</p>
+                    <a th:href="@{/feedback/form}" class="btn btn-primary btn-lg">
+                        <i class="fas fa-plus me-2"></i>Submit Your First Feedback
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <i class="fas fa-exclamation-triangle text-warning me-2"></i>Confirm Delete
+                </h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <p>Are you sure you want to delete this feedback? This action cannot be undone.</p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <form id="deleteForm" method="post" style="display: inline;">
+                    <input type="hidden" name="userId" th:value="${userId}">
+                    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+                    <button type="submit" class="btn btn-danger">
+                        <i class="fas fa-trash me-2"></i>Delete
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<br><br><br><br><br><br><br><br><br>
+
+
+<!-- FOOTER -->
+<footer class="text-center text-lg-start text-white" style="background-color: #000000; width: 100%;">
+    <div class="container-fluid p-4 pb-0">
+        <section class="">
+            <div class="row">
+                <div class="col-md-3 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">SecureLife</h6>
+                    <p>This platform connects policyholders, insurance agents, and administrators with efficient life insurance services and resources.</p>
+                </div>
+
+                <div class="col-md-2 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">SITE MAP</h6>
+                    <p><a class="text-white" th:href="@{/}"  loading="lazy"  >Home</a></p>
+                    <p><a class="text-white" th:href="@{/aboutus}" loading="lazy"  >About</a></p>
+                    <p><a class="text-white" th:href="@{/servicesproduct}"  loading="lazy"  >Services</a></p>
+                </div>
+
+                <div class="col-md-3 col-lg-2 col-xl-2 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Useful Sites</h6>
+                    <p><a class="text-white" href="https://ircsl.gov.lk/" target="_blank">IRCSL</a></p>
+                    <p><a class="text-white" href="https://www.who.int/" target="_blank">WHO</a></p>
+                    <p><a class="text-white" href="https://www.cdc.gov/" target="_blank">CDC</a></p>
+                </div>
+
+                <div class="col-md-4 col-lg-3 col-xl-3 mx-auto mt-3">
+                    <h6 class="text-uppercase mb-4 font-weight-bold">Contact</h6>
+                    <p><i class="fas fa-home mr-3"></i> 324, Havelock Road, Colombo 06.</p>
+                    <p><i class="fas fa-envelope mr-3"></i> securelife@gmail.com</p>
+                    <p><i class="fas fa-phone mr-3"></i>+94 112145300</p>
+                    <p><i class="fas fa-print mr-3"></i> +94 112145500</p>
+                </div>
+            </div>
+        </section>
+
+        <hr class="my-3">
+
+        <section class="p-3 pt-0">
+            <div class="row d-flex align-items-center">
+                <div class="col-md-7 col-lg-8 text-center text-md-start">
+                    <div class="p-3">
+                        ©Copyright 2025 securelife.lk | All Rights Reserved | Privacy & Terms | Designed & Developed by EvelutionX Studio
+                    </div>
+                </div>
+                <div class="col-md-5 col-lg-4 ml-lg-0 text-center text-md-end">
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://web.facebook.com/profile.php?id=61581494878067"   target="_blank"   role="button" >
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://www.youtube.com/@SecureLife-i4b"  target="_blank" role="button">
+                        <i class="fab fa-youtube"></i>
+                    </a>
+                    <a class="btn btn-outline-light btn-floating m-1" href="https://api.whatsapp.com/send/?phone=%2B94776749017&text&type=phone_number&app_absent=0" target="_blank" role="button">
+                        <i class="fab fa-whatsapp"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+    </div>
+</footer>
+<!-- END FOOTER -->
+
+
+
+
+
+
+<!-- JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    function deleteFeedback(feedbackId) {
+        const deleteForm = document.getElementById('deleteForm');
+        deleteForm.action = '/feedback/delete/' + feedbackId;
+        
+        const deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+        deleteModal.show();
+    }
+</script>
+
+
+
+</body>
+</html>

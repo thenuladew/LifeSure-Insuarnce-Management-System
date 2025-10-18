@@ -1,0 +1,148 @@
+
+/*-----------------------------------------
+courses content
+----------------------------------------*/
+
+
+li {list-style-type:disc;}
+
+#coursebackground{
+    background-color: #fdfefe
+}
+
+.coursebody {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #fdfefe  ;
+}
+
+.card {
+    max-width: 900px;
+    margin: 50px auto;
+    background: #fff;
+    border-radius: 15px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.4);
+    overflow: hidden;
+}
+
+.card img {
+    width: 250px;
+    height: auto;
+    display: block;
+    margin: 20px auto 0 auto;
+    border-radius: 10px;
+}
+
+.card-content {
+    padding: 25px;
+}
+
+.title {
+    font-size: 28px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+.title .highlight {
+    color: #2e8b57;
+}
+
+.rating {
+    color: #ffa500;
+    font-size: 18px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.info {
+    font-size: 16px;
+    line-height: 1.6;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.enroll-button {
+    display: block;
+    background-color: #28a745;
+    color: white;
+    padding: 12px 18px;
+    text-decoration: none;
+    border-radius: 8px;
+    margin: 0 auto 20px auto;
+    font-weight: bold;
+    text-align: center;
+    width: fit-content;
+    transition: background 0.3s;
+}
+
+.enroll-button:hover {
+    background-color: #218838;
+}
+
+.syllabus h3 {
+    font-size: 22px;
+    margin-bottom: 10px;
+    border-bottom: 2px solid #ddd;
+    padding-bottom: 5px;
+}
+
+.syllabus ul {
+    padding-left: 20px;
+}
+
+.syllabus li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.sublist {
+    padding-left: 20px;
+    list-style-type: circle;
+}
+
+@media (max-width: 600px) {
+    .title {
+        font-size: 22px;
+    }
+    .card-content {
+        padding: 15px;
+    }
+}
+
+
+
+.navbar-nav {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+}
+
+
+.navbar-nav li {
+    list-style: none;
+}
+
+
+
+.course-image {
+    width: 100%;       /* full width of the card */
+    height: 350px;     /* set desired height */
+    object-fit: contain; /* fits entire image inside without cropping */
+    background-color: #f8f9fa; /* optional: gives a light background if image doesn't fill fully */
+}
+
+
+.course-card:hover {
+    transform: scale(1.00);
+    border: 3px solid #1ad023 !important;
+}
+
+.course-card {
+    border: 4px solid #c5cdc5 !important; /* thick green border */
+    border-radius: 3px;
+    overflow: hidden;
+    transition: transform 0.3s ease-in-out;
+}

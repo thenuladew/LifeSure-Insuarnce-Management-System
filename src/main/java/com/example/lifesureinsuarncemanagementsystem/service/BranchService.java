@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.example.lifesureinsuarncemanagementsystem.entity.Branch;
-import com.example.lifesureinsuarncemanagementsystem.entity.BranchStatus;
+import com.example.lifesureinsuarncemanagementsystem.model.Branch;
+import com.example.lifesureinsuarncemanagementsystem.model.BranchStatus;
 import com.example.lifesureinsuarncemanagementsystem.repository.BranchRepository;
 
 @Service

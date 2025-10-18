@@ -5,9 +5,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import com.example.lifesureinsuarncemanagementsystem.entity.BranchUser;
-import com.example.lifesureinsuarncemanagementsystem.entity.Role;
-import com.example.lifesureinsuarncemanagementsystem.entity.BranchStatus;
+import com.example.lifesureinsuarncemanagementsystem.model.BranchUser;
+import com.example.lifesureinsuarncemanagementsystem.model.Role;
+import com.example.lifesureinsuarncemanagementsystem.model.BranchStatus;
 import com.example.lifesureinsuarncemanagementsystem.repository.BranchUserRepository;
 import com.example.lifesureinsuarncemanagementsystem.repository.BranchRepository;
 

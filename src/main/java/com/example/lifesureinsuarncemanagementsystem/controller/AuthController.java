@@ -8,12 +8,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class AuthController {
 
-    @GetMapping("/login")
-    public String login(@RequestParam(value = "error", required = false) String error,
+    @GetMapping("/branch/login")
+    public String branchLogin(@RequestParam(value = "error", required = false) String error,
                         @RequestParam(value = "logout", required = false) String logout,
+                        @RequestParam(value = "denied", required = false) String denied,
                         Model model) {
         if (error != null) model.addAttribute("error", "Invalid username or password.");
         if (logout != null) model.addAttribute("message", "You have been logged out.");
-        return "login";
+        if (denied != null) model.addAttribute("error", "You do not have permission to access the branch portal. Please contact your administrator.");
+        return "branch-login";
     }
 }

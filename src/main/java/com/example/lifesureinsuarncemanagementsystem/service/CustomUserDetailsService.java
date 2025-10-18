@@ -11,7 +11,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import com.example.lifesureinsuarncemanagementsystem.entity.BranchUser;
+import com.example.lifesureinsuarncemanagementsystem.model.BranchUser;
 import com.example.lifesureinsuarncemanagementsystem.repository.BranchUserRepository;
 
 @Service
