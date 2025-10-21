@@ -1,137 +1,153 @@
 <div align="center">
 
-# LifeSure Insurance Management System
+# 🏥 LifeSure Insurance Management System
 
-Comprehensive life insurance management built on Spring Boot 3.5, featuring secure user/branch administration, performance dashboards, and customer operations.
+A comprehensive web-based life insurance management system built with modern technologies to streamline insurance operations for administrators, agents, branch managers, and customers.
+
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.5.6-brightgreen.svg)](https://spring.io/projects/spring-boot)
+[![Java](https://img.shields.io/badge/Java-17-orange.svg)](https://www.oracle.com/java/)
 
 </div>
 
-## Features
+---
 
-- Branch management: CRUD, status filters, search, and performance KPIs
-- Performance dashboard: target vs achieved, variance, achievement progress
-- User authentication and role-based access (Spring Security)
-- Server-side validation (Jakarta Validation) + client hints
-- Thymeleaf UI with Bootstrap 5 and icons
-- File upload support and static resource handling
-- JPA/Hibernate with MariaDB (H2 for dev/test)
+##  About
 
-## Tech Stack
+LifeSure is a full-stack web application providing an integrated platform for managing life insurance operations including policy lifecycle management, multi-role user management, branch performance tracking, payment processing, and customer support. Built with Spring Boot and following MVC architecture with role-based access control.
 
-- Java 17, Spring Boot 3.5.x
-- Spring Web, Spring Data JPA, Spring Security, Validation
-- Thymeleaf, Bootstrap 5, Bootstrap Icons
-- MariaDB (prod), H2 (runtime/dev)
+---
 
-## Getting Started
+## ✨ Features
+
+- **Multi-role Authentication** - Admin, Branch Manager, Agent, and Customer portals with Spring Security
+- **Branch Management** - CRUD operations, performance dashboards, and KPI tracking
+- **Policy Management** - Create, assign, and track insurance policies with status workflows
+- **Payment Processing** - Secure payment slip uploads and verification system
+- **Customer Portal** - Profile management, policy portfolio, payment history, and feedback
+- **Agent Dashboard** - Task assignments, customer management, and commission tracking
+- **Admin Controls** - System-wide analytics, user management, and feedback monitoring
+
+---
+
+## 🛠️ Technology Stack
+
+**Backend:** Java 17, Spring Boot 3.5.6, Spring MVC, Spring Data JPA, Spring Security, Hibernate, Lombok
+
+**Frontend:** Thymeleaf, HTML5/CSS3, Bootstrap 5, JavaScript
+
+**Database:** MariaDB/MySQL, H2 (development)
+
+**Tools:** Maven, Maven Wrapper
+
+---
+
+## 🚀 Getting Started
 
 ### Prerequisites
 
 - Java 17+
-- Maven 3.9+ (wrapper included: `./mvnw`)
-- MariaDB running locally (or change DB settings)
+- Maven 3.9+ (Maven Wrapper included)
+- MariaDB/MySQL Server
 
-### Configuration
+### Installation
 
-Edit `src/main/resources/application.properties` as needed:
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/thenuladew/LifeSure-Insuarnce-Management-System.git
+   cd LifeSure-Insuarnce-Management-System
+   ```
 
-- `server.port=8080`
-- `spring.datasource.url=jdbc:mariadb://localhost:3306/SecureLife`
-- `spring.datasource.username=workbench`
-- `spring.datasource.password=***` (set your own)
-- `spring.jpa.hibernate.ddl-auto=update`
-- Static uploads: `spring.web.resources.static-locations=classpath:/static/,file:./uploads/`
+2. **Configure database**
+   
+   Create database:
+   ```sql
+   CREATE DATABASE SecureLife;
+   ```
+   
+   Update `src/main/resources/application.properties`:
+   ```properties
+   spring.datasource.url=jdbc:mariadb://localhost:3306/SecureLife
+   spring.datasource.username=your_username
+   spring.datasource.password=your_password
+   spring.jpa.hibernate.ddl-auto=update
+   ```
 
-### Run locally
+3. **Build and run**
+   ```bash
+   ./mvnw spring-boot:run
+   ```
 
-Using Maven Wrapper (recommended):
+4. **Access application**
+   ```
+   http://localhost:8080
+   ```
 
-```bash
-./mvnw spring-boot:run
+### Key URLs
+- Home: `http://localhost:8080/`
+- Admin Login: `http://localhost:8080/admin-login`
+- Branch Login: `http://localhost:8080/branch-login`
+- Agent Login: `http://localhost:8080/agent-login.html`
+- User Login: `http://localhost:8080/login`
+
+---
+
+## 🗄️ Database Schema
+
+Main tables: `users`, `admins`, `agents`, `branches`, `branch_users`, `policies`, `payments`, `tasks`, `feedback`
+
+SQL scripts included for table creation in the root directory.
+
+---
+
+## 👥 User Roles
+
+- **Administrator** - Full system access, manage all users and operations
+- **Branch Manager** - Manage branch operations and performance
+- **Agent** - Register customers, create policies, track tasks
+- **Customer** - View policies, make payments, submit feedback
+
+---
+
+## 📁 Project Structure
+
+```
+LifeSure-Insuarnce-Management-System/
+├── src/main/
+│   ├── java/com/example/lifesureinsuarncemanagementsystem/
+│   │   ├── config/              # Security configuration
+│   │   ├── controller/          # MVC Controllers
+│   │   ├── dto/                 # Data Transfer Objects
+│   │   ├── entity/              # JPA Entities
+│   │   ├── model/               # Domain Models
+│   │   ├── repository/          # Data Access Layer
+│   │   └── service/             # Business Logic
+│   └── resources/
+│       ├── application.properties
+│       ├── static/              # CSS, JS, Images
+│       └── templates/           # Thymeleaf HTML
+├── uploads/                     # File upload directory
+├── pom.xml                      # Maven configuration
+└── mvnw                         # Maven Wrapper
 ```
 
-Or run the packaged jar:
+---
 
-```bash
-./mvnw -DskipTests package
-java -jar target/*.jar
-```
-
-Then open:
-
-- Branch list: http://localhost:8080/branches
-- Branch dashboard: http://localhost:8080/branches/dashboard
-
-### Tests
+## 🧪 Testing
 
 ```bash
 ./mvnw test
 ```
 
-## Project Structure
+---
 
-```
-src/
-    main/
-        java/com/example/lifesureinsuarncemanagementsystem/...
-        resources/
-            templates/
-                branches/ (list, form, dashboard)
-                feedback/ ...
-            static/
-                css/ (style.css, branch-management.css)
-                images/
-    test/
-```
+##  Contact
 
-## Key Screens
+**Repository:** [https://github.com/thenuladew/LifeSure-Insuarnce-Management-System](https://github.com/thenuladew/LifeSure-Insuarnce-Management-System)
 
-- Branches: list, search, status filter, CRUD
-- Branch form: client-side constraints mirror backend annotations
-    - bCode pattern: `BR###` (e.g., BR001)
-    - Phone: exactly 10 digits
-    - Name/Address lengths enforced
-- Dashboard: blue/green hero with KPI cards; table for per-branch performance and updates
+---
 
-## Security
+<div align="center">
 
-- Spring Security with CSRF enabled (forms include CSRF tokens)
-- Role-based navigation and action visibility
+**Built with Spring Boot & Java**
 
-## Database
-
-Default is MariaDB. To try quickly with H2 (in-memory), you can add the following to `application.properties` while developing:
-
-```properties
-spring.datasource.url=jdbc:h2:mem:testdb
-spring.datasource.driver-class-name=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
-spring.jpa.hibernate.ddl-auto=update
-spring.h2.console.enabled=true
-```
-
-## File Uploads
-
-- Configured limits: 10MB per file, 10MB per request
-- Files can be served from `./uploads` alongside classpath static content
-
-## Build
-
-```bash
-./mvnw -q -DskipTests package
-```
-
-## Troubleshooting
-
-- Port already in use: change `server.port`
-- DB connection errors: verify URL, credentials, and DB is up
-- Static resources not updating: clear browser cache or disable caching in dev tools
-
-## License
-
-This project is provided as-is for educational and internal use. Add your organization’s license terms here if needed.
-
-## Acknowledgements
-
-- Spring Boot team, Thymeleaf, Bootstrap, MariaDB
+</div>
