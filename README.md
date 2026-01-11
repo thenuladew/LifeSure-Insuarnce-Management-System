@@ -1,6 +1,6 @@
 <div align="center">
 
-# 🏥 LifeSure Insurance Management System
+# LifeSure Insurance Management System
 
 A comprehensive web-based life insurance management system built with modern technologies to streamline insurance operations for administrators, agents, branch managers, and customers.
 
@@ -17,7 +17,7 @@ LifeSure is a full-stack web application providing an integrated platform for ma
 
 ---
 
-## ✨ Features
+## Features
 
 - **Multi-role Authentication** - Admin, Branch Manager, Agent, and Customer portals with Spring Security
 - **Branch Management** - CRUD operations, performance dashboards, and KPI tracking
@@ -29,7 +29,7 @@ LifeSure is a full-stack web application providing an integrated platform for ma
 
 ---
 
-## 🛠️ Technology Stack
+## Technology Stack
 
 **Backend:** Java 17, Spring Boot 3.5.6, Spring MVC, Spring Data JPA, Spring Security, Hibernate, Lombok
 
@@ -41,7 +41,7 @@ LifeSure is a full-stack web application providing an integrated platform for ma
 
 ---
 
-## 🚀 Getting Started
+## Getting Started
 
 ### Prerequisites
 
@@ -91,7 +91,7 @@ LifeSure is a full-stack web application providing an integrated platform for ma
 
 ---
 
-## 🗄️ Database Schema
+## Database Schema
 
 Main tables: `users`, `admins`, `agents`, `branches`, `branch_users`, `policies`, `payments`, `tasks`, `feedback`
 
@@ -99,7 +99,7 @@ SQL scripts included for table creation in the root directory.
 
 ---
 
-## 👥 User Roles
+## User Roles
 
 - **Administrator** - Full system access, manage all users and operations
 - **Branch Manager** - Manage branch operations and performance
@@ -108,7 +108,7 @@ SQL scripts included for table creation in the root directory.
 
 ---
 
-## 📁 Project Structure
+## Project Structure
 
 ```
 LifeSure-Insuarnce-Management-System/
@@ -132,7 +132,7 @@ LifeSure-Insuarnce-Management-System/
 
 ---
 
-## 🧪 Testing
+## Testing
 
 ```bash
 ./mvnw test
